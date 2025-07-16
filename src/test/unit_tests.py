@@ -1,147 +1,146 @@
+import unittest
+import json
+import os
+import tempfile
+from unittest.mock import patch, mock_open
 from src.data_handler import DataHandler
 
-def test_get_user_by_alias_1():
-    # Test with a valid user alias
-    data = DataHandler()
-    data.users = [
-        {"id": 1, "alias": "testuser", "nombre": "Test"}]
-    result = data.get_user_by_alias("testuser")
-    assert result == {"id": 1, "alias": "testuser", "nombre": "Test"}
+class TestDataHandler(unittest.TestCase):
+    
+    def setUp(self):
+        self.test_dir = tempfile.mkdtemp()
+        self.data_handler = DataHandler()
+        
+        # Datos de prueba
+        self.test_users = [
+            {
+                "id": 1,
+                "alias": "test_driver",
+                "name": "Test Driver",
+                "carPlate": "TEST-123",
+                "rides": []
+            },
+            {
+                "id": 2,
+                "alias": "test_passenger",
+                "name": "Test Passenger",
+                "carPlate": "TEST-456",
+                "rides": []
+            }
+        ]
+        
+        self.test_rides = [
+            {
+                "id": 1,
+                "rideDateAndTime": "2025-07-20 08:00",
+                "finalAddress": "Universidad Central",
+                "allowedSpaces": 3,
+                "rideDriver": 1,
+                "status": "Ready",
+                "participants": []
+            }
+        ]
+        
+        self.test_participations = []
 
-def test_get_user_by_alias_2():
-    # Test with an invalid user alias
-    data = DataHandler()
-    data.users = []
-    result = data.get_user_by_alias("testuser")
-    assert result is None
+    def test_get_user_by_attribute_success(self):
+        """Caso de éxito: Obtener usuario por alias existente"""
+        with patch.object(self.data_handler, 'load_users'):
+            self.data_handler.users = self.test_users
+            
+            result = self.data_handler.get_user_by_attribute('alias', 'test_driver')
+            
+            self.assertIsNotNone(result)
+            self.assertEqual(result['alias'], 'test_driver')
+            self.assertEqual(result['name'], 'Test Driver')
 
-def test_get_user_by_alias_3():
-    # Test with an empty user alias
-    data = DataHandler()
-    data.users = [{"id": 1, "alias": "testuser", "nombre": "Test"}]
-    result = data.get_user_by_alias("test")
-    assert result is None
+    def test_get_user_by_attribute_not_found(self):
+        """Caso de error: Usuario no encontrado"""
+        with patch.object(self.data_handler, 'load_users'):
+            self.data_handler.users = self.test_users
+            
+            result = self.data_handler.get_user_by_attribute('alias', 'nonexistent_user')
+            
+            self.assertIsNone(result)
 
-def test_get_user_by_alias_4():
-    # Test with a user alias that has special characters
-    data = DataHandler()
-    data.users = [{"id": 1, "alias": "testuser", "nombre": "Test"}]
-    result = data.get_user_by_alias("")
-    assert result is None
+    def test_request_to_join_ride_success(self):
+        """Caso de éxito: Solicitud exitosa para unirse a un ride"""
+        with patch.object(self.data_handler, 'load_users'), \
+             patch.object(self.data_handler, 'load_rides'), \
+             patch.object(self.data_handler, 'load_ride_participations'), \
+             patch.object(self.data_handler, 'save_rides'), \
+             patch.object(self.data_handler, 'save_ride_participations'):
+            
+            self.data_handler.users = self.test_users.copy()
+            self.data_handler.rides = self.test_rides.copy()
+            self.data_handler.ride_participations = []
+            
+            result = self.data_handler.request_to_join_ride('test_driver', 1, 'test_passenger')
+            
+            self.assertIsNotNone(result)
+            self.assertEqual(result['rideId'], 1)
+            self.assertEqual(result['status'], 'Pendiente')
+            self.assertEqual(result['destination'], 'Universidad Central')
 
-def test_create_user_1():
-    # Test creating a user with valid data
-    data = DataHandler()
-    new_user = {"contacto": "newuser", "nombre": "New User"}
-    data.create_user(new_user)
-    assert len(data.users) == 1
-    assert data.users[0]['alias'] == "newuser"
-    assert data.users[0]['nombre'] == "New User"
+    def test_request_to_join_ride_user_not_found(self):
+        """Caso de error: Usuario no encontrado en solicitud de ride"""
+        with patch.object(self.data_handler, 'load_users'), \
+             patch.object(self.data_handler, 'load_rides'), \
+             patch.object(self.data_handler, 'load_ride_participations'):
+            
+            self.data_handler.users = self.test_users.copy()
+            self.data_handler.rides = self.test_rides.copy()
+            self.data_handler.ride_participations = []
+            
+            result = self.data_handler.request_to_join_ride('nonexistent_user', 1, 'test_passenger')
+            
+            self.assertIsNone(result)
 
-def test_create_user_2():
-    # Test creating a user with missing fields
-    data = DataHandler()
-    new_user = {}
-    data.create_user(new_user)
-    assert len(data.users) == 0
+    def test_request_to_join_ride_ride_not_found(self):
+        """Caso de error: Ride no encontrado"""
+        with patch.object(self.data_handler, 'load_users'), \
+             patch.object(self.data_handler, 'load_rides'), \
+             patch.object(self.data_handler, 'load_ride_participations'):
+            
+            self.data_handler.users = self.test_users.copy()
+            self.data_handler.rides = self.test_rides.copy()
+            self.data_handler.ride_participations = []
+            
+            result = self.data_handler.request_to_join_ride('test_driver', 999, 'test_passenger')
+            
+            self.assertIsNone(result)
 
-def test_create_user_3():
-    # Test creating a user with an existing alias
-    data = DataHandler()
-    data.users = [{"id": 1, "alias": "existinguser", "nombre": "Existing User"}]
-    new_user = {"contacto": "existinguser"}
-    data.create_user(new_user)
-    assert len(data.users) == 1  # Should not create a duplicate user
-    assert data.users[0]['alias'] == "existinguser"
+    def test_accept_ride_request_invalid_driver(self):
+        """Caso de error: Conductor inválido al aceptar solicitud"""
+        with patch.object(self.data_handler, 'load_users'), \
+             patch.object(self.data_handler, 'load_rides'), \
+             patch.object(self.data_handler, 'load_ride_participations'):
+            
+            test_ride = self.test_rides[0].copy()
+            test_ride['participants'] = [2] 
+            
+            self.data_handler.users = self.test_users.copy()
+            self.data_handler.rides = [test_ride]
+            self.data_handler.ride_participations = []
+        
+            result = self.data_handler.accept_ride_request('test_passenger', 1, 'test_passenger')
+            
+            self.assertIsNone(result)
 
-def test_create_user_4():
-    # Test creating a user with an empty alias
-    data = DataHandler()
-    new_user = {"contacto": "", "nombre": ""}
-    data.create_user(new_user)
-    assert len(data.users) == 0
+    def test_generate_new_id_empty_list(self):
+        """Caso de éxito: Generar ID para lista vacía"""
+        result = self.data_handler.generate_new_id([])
+        self.assertEqual(result, 1)
 
-def test_create_task_1():
-    # Test creating a task with valid data
-    data = DataHandler()
-    new_task = {"nombre": "New Task", "descripcion": "Task Description", "usuario": "testuser", "rol": "Infraestructura"}
-    data.users = [{"id": 1, "alias": "testuser", "nombre": "Test User"}]
-    res = data.create_task(new_task)
-    assert res is not None
-    assert len(data.tasks) == 1
-    assert data.tasks[0]['nombre'] == "New Task"
-    assert data.tasks[0]['descripcion'] == "Task Description"
-    assert data.tasks[0]['usuario'] == 1
+    def test_generate_new_id_with_existing_items(self):
+        """Caso de éxito: Generar nuevo ID con elementos existentes"""
+        test_data = [
+            {"id": 1, "name": "item1"},
+            {"id": 3, "name": "item2"},
+            {"id": 2, "name": "item3"}
+        ]
+        result = self.data_handler.generate_new_id(test_data)
+        self.assertEqual(result, 4)
 
-def test_create_task_2():
-    # Test creating a task with missing fields
-    data = DataHandler()
-    new_task = {"nombre": "Incomplete Task"}
-    res = data.create_task(new_task)
-    assert res is None
-    assert len(data.tasks) == 0
-
-
-def test_create_task_3():
-    # Test creating a task with an invalid role
-    data = DataHandler()
-    new_task = {"nombre": "Invalid Role Task", "descripcion": "Task Description", "usuario": "testuser", "rol": "InvalidRole"}
-    data.users = [{"id": 1, "alias": "testuser", "nombre": "Test User"}]
-    res = data.create_task(new_task)
-    assert res is None
-    assert len(data.tasks) == 0
-
-def test_create_task_4():
-    # Test creating a task with an empty user alias
-    data = DataHandler()
-    new_task = {"nombre": "Empty User Task", "descripcion": "Task Description", "usuario": "", "rol": "Infraestructura"}
-    res = data.create_task(new_task)
-    assert res is None
-    assert len(data.tasks) == 0
-
-def test_update_state_task_1():
-    # Test updating task state with valid data
-    data = DataHandler()
-    data.tasks = [{"id": 1, "estado": "Nueva"}]
-    new_state = {"estado": "En Progreso"}
-    res = data.update_task_state(1, new_state['estado'])
-    assert res is not None
-    assert res['estado'] == "Completado"
-
-def test_update_state_task_2():
-    # Test updating task state with an invalid task ID
-    data = DataHandler()
-    data.tasks = [{"id": 1, "estado": "Nueva"}]
-    new_state = {"estado": "En Progreso"}
-    res = data.update_task_state('2', new_state['estado'])
-    assert res is None
-    assert data.tasks[0]['estado'] == "Nueva"
-
-def test_update_state_task_3():
-    # Test updating task state with an not existing state
-    data = DataHandler()
-    data.tasks = [{"id": 1, "estado": "Nueva"}]
-    new_state = {"estado": "InvalidState"}
-    res = data.update_task_state(1, new_state['estado'])
-    assert res is None
-    assert data.tasks[0]['estado'] == "Nueva"
-
-def test_update_state_task_4():
-    # Test updating task state with an invalid state
-    data = DataHandler()
-    data.tasks = [{"id": 1, "estado": "Nueva"}]
-    new_state = {"estado": "Finalizada"}
-    res = data.update_task_state(1, new_state['estado'])
-    assert res is None
-    assert data.tasks[0]['estado'] == "Nueva"
-
-def test_create_assignment_1():
-    # Test creating an assignment with valid data
-    data = DataHandler()
-    data.tasks = [{"id": 1, "nombre": "Test Task"}]
-    new_assignment = {"usuario": "testuser", "rol": "Analisis"}
-    data.users = [{"id": 1, "alias": "testuser", "nombre": "Test User"}]
-    res = data.create_assignment(1, new_assignment)
-    assert res is not None
-    assert len(data.asignaciones) == 1
-    assert data.asignaciones[0]['usuarioAsignado'] == 1
+if __name__ == '__main__':
+    unittest.main()
