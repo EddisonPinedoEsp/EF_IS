@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "rideDateAndTime": "2025-07-20 08:00",
+        "finalAddress": "Universidad Central - Campus Norte",
+        "allowedSpaces": 4,
+        "rideDriver": 1,
+        "status": "Ready",
+        "participants": [2, 3]
+    },
+    {
+        "id": 2,
+        "rideDateAndTime": "2025-07-20 18:00",
+        "finalAddress": "Centro Comercial Plaza",
+        "allowedSpaces": 3,
+        "rideDriver": 1,
+        "status": "Ready",
+        "participants": []
+    },
+    {
+        "id": 3,
+        "rideDateAndTime": "2025-07-21 07:30",
+        "finalAddress": "Aeropuerto Internacional",
+        "allowedSpaces": 2,
+        "rideDriver": 4,
+        "status": "InProgress",
+        "participants": [2]
+    },
+    {
+        "id": 4,
+        "rideDateAndTime": "2025-07-22 16:00",
+        "finalAddress": "Hospital General",
+        "allowedSpaces": 3,
+        "rideDriver": 4,
+        "status": "Ready",
+        "participants": [3]
+    }
+]

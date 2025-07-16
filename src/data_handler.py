@@ -5,54 +5,55 @@ from dateutil.relativedelta import relativedelta
 class DataHandler:
     def __init__(self, filename='data.json'):
         self.filename = filename
-        self.tasks = []
+        self.rides = []
         self.users = []
-        self.asignaciones = []
+        self.ride_participations = []
         self.load_data()
 
     def save_data(self):
         data = {
-            'tasks': self.tasks,
-            'users': self.users
+            'rides': self.rides,
+            'users': self.users,
+            'ride_participations': self.ride_participations
         }
         with open(self.filename, 'w') as f:
             json.dump(data, f)
 
     def load_data(self):
-        self.load_usuarios()
-        self.load_tareas()
-        self.load_asignaciones()
-    
-    def load_users(self, path='src/data/usuarios.json'):
+        self.load_users()
+        self.load_rides()
+        self.load_ride_participations()
+
+    def load_users(self, path='data/users.json'):
         try:
             with open(path, 'r') as f:
                 self.users = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.users = []
 
-    def save_users(self, path='src/data/usuarios.json'):
+    def save_users(self, path='data/users.json'):
         with open(path, 'w') as f:
             json.dump(self.users, f)
 
-    def load_rides(self, path='src/data/rides.json'):
+    def load_rides(self, path='data/rides.json'):
         try:
             with open(path, 'r') as f:
                 self.rides = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.rides = []
 
-    def save_rides(self, path='src/data/rides.json'):
+    def save_rides(self, path='data/rides.json'):
         with open(path, 'w') as f:
             json.dump(self.rides, f)
 
-    def load_ride_participations(self, path='src/data/ride_participations.json'):
+    def load_ride_participations(self, path='data/rideParticipations.json'):
         try:
             with open(path, 'r') as f:
                 self.ride_participations = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.ride_participations = []
     
-    def save_ride_participations(self, path='src/data/ride_participations.json'):
+    def save_ride_participations(self, path='data/rideParticipations.json'):
         with open(path, 'w') as f:
             json.dump(self.ride_participations, f)
 
@@ -68,7 +69,18 @@ class DataHandler:
                 return user
         return None
 
-    def get_users(self):
+    def get_user_by_atribute(self, attribute, value):
+        # Método con typo para mantener compatibilidad
+        return self.get_user_by_attribute(attribute, value)
+
+    def get_ride_by_attribute(self, attribute, value):
+        self.load_rides()
+        for ride in self.rides:
+            if ride.get(attribute) == value:
+                return ride
+        return None
+
+    def get_all_users(self):
         self.load_users()
         return self.users
     

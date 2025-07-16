@@ -20,7 +20,7 @@ def get_users():
     try:
         users = data_handler.get_all_users()
         if not users:
-            return jsonify({"error": "No users found"}), 404
+            return jsonify([]), 200  # Devolver lista vacía con status 200 en lugar de error 404
         return jsonify(users)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -76,3 +76,6 @@ def reject_ride_request(alias, ride_id, alias2):
         return jsonify({"message": "Participation request successful"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)

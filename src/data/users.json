@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "alias": "juan_driver",
+        "name": "Juan Pérez",
+        "carPlate": "ABC-123",
+        "rides": [1, 2]
+    },
+    {
+        "id": 2,
+        "alias": "maria_user",
+        "name": "María García",
+        "carPlate": "DEF-456",
+        "rides": [3]
+    },
+    {
+        "id": 3,
+        "alias": "carlos_rider",
+        "name": "Carlos López",
+        "carPlate": "GHI-789",
+        "rides": []
+    },
+    {
+        "id": 4,
+        "alias": "ana_driver",
+        "name": "Ana Rodríguez",
+        "carPlate": "JKL-012",
+        "rides": [4]
+    }
+]

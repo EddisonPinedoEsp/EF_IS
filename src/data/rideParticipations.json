@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "confirmation": "15-07-25",
+        "destination": "Universidad Central - Campus Norte",
+        "occupiedSpaces": 2,
+        "status": "Pendiente",
+        "rideId": 1
+    },
+    {
+        "id": 2,
+        "confirmation": "15-07-25",
+        "destination": "Universidad Central - Campus Norte",
+        "occupiedSpaces": 2,
+        "status": "Aceptada",
+        "rideId": 1
+    },
+    {
+        "id": 3,
+        "confirmation": "15-07-25",
+        "destination": "Aeropuerto Internacional",
+        "occupiedSpaces": 1,
+        "status": "Aceptada",
+        "rideId": 3
+    },
+    {
+        "id": 4,
+        "confirmation": "15-07-25",
+        "destination": "Hospital General",
+        "occupiedSpaces": 1,
+        "status": "Pendiente",
+        "rideId": 4
+    }
+]
