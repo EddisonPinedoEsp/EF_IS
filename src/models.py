@@ -14,7 +14,7 @@ class Ride(BaseModel):
     finalAddress: str
     allowedSpaces: int
     rideDriver: int # User
-    status: str
+    status: str # Ready, InProgress, Done
     participants: list[int] = [] # Lista<RideParticipation>
 
 class RideParticipation(BaseModel):
@@ -22,5 +22,5 @@ class RideParticipation(BaseModel):
     confirmation: str
     destination: str
     occupiedSpaces: int
-    status: str
+    status: str # Waiting, Rejected, Confirmed, Missing, NotMarked, In Progress, Done
     rideId: int

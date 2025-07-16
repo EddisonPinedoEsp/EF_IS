@@ -80,6 +80,13 @@ class DataHandler:
                 return ride
         return None
 
+    def get_ride_participation_by_attribute(self, attribute, value):
+        self.load_ride_participations()
+        for participation in self.ride_participations:
+            if participation.get(attribute) == value:
+                return participation
+        return None
+
     def get_all_users(self):
         self.load_users()
         return self.users
@@ -94,6 +101,63 @@ class DataHandler:
         
         return user.get('rides', [])
 
+    def get_ride_details(self, attribute, value):
+        self.load_rides()
+        ride = self.get_ride_by_attribute(attribute, value)
+        if not ride:
+            return None
+        
+        driver_alias = self.get_user_by_atribute('id', ride['rideDriver'])['alias']
+        participants = []
+        for participation in ride['participants']:
+            participant = self.get_user_by_atribute('id', participation)
+            
+            previousRidesTotal = 0
+            previousRidesCompleted = 0
+            previousRidesMissing = 0
+            previousRidesNotMarked = 0
+            previousRidesRejected = 0
+            for previousRide in participant['rides']:
+                if previousRide['status'] == 'Waiting':
+                    previousRidesTotal += 1
+                elif previousRide['status'] == 'Done':
+                    previousRidesCompleted += 1
+                elif previousRide['status'] == 'Missing':
+                    previousRidesMissing += 1
+                elif previousRide['status'] == 'NotMarked':
+                    previousRidesNotMarked += 1
+                elif previousRide['status'] == 'Rejected':
+                    previousRidesRejected += 1
+
+            user = {
+                'confirmation': participation['confirmation'],
+                'participant': {
+                    'alias': participant['alias'],
+                    "previousRidesTotal": previousRidesTotal,
+                    "previousRidesCompleted": previousRidesCompleted,
+                    "previousRidesMissing": previousRidesMissing,
+                    "previousRidesNotMarked": previousRidesNotMarked,
+                    "previousRidesRejected": previousRidesRejected
+                },
+                'destination': participant['finalAddress'],
+                'occupiedSpaces': participant['allowedSpaces'],
+                'status': participation['status'],
+                }
+
+            participants.append(user)
+
+        res = {
+            "id": ride['id'],
+            "rideDateAndTime": ride['rideDateAndTime'],
+            "finalAddress": ride['finalAddress'],
+            "driver": driver_alias,
+            "status": ride['status'],
+            "participants": participants
+        }
+        return res
+
+
+        
     def request_to_join_ride(self, alias, ride_id, alias2):
         self.load_users()
         self.load_rides()
@@ -169,5 +233,71 @@ class DataHandler:
                 rides['status'] = 'Rechazada'
                 self.save_rides()
                 return rides
+
+        return None
+    
+    def start_ride(self, alias, ride_id):
+        self.load_users()
+        self.load_rides()
+        self.load_ride_participations()
+
+        user1 = self.get_user_by_atribute('alias', alias)
+        if not user1:
+            return None
+        
+        ride = self.get_ride_by_attribute('id', ride_id)
+        if not ride or ride['rideDriver'] != user1['id']:
+            return None
+        
+        for rides in self.users['rides']:
+            if rides['rideId'] == ride_id:
+                rides['status'] = 'En Progreso'
+                self.save_rides()
+                return rides
+        
+        for rides in self.users['rides']:
+            if rides['rideId'] == ride_id:
+                rides['status'] = 'Completado'
+                self.save_rides()
+                return rides
+
+        return None
+    
+    def end_ride(self, alias, ride_id):
+        self.load_users()
+        self.load_rides()
+        self.load_ride_participations()
+
+        user1 = self.get_user_by_atribute('alias', alias)
+        if not user1:
+            return None
+        
+        ride = self.get_ride_by_attribute('id', ride_id)
+        if not ride or ride['rideDriver'] != user1['id']:
+            return None
+        
+        for rides in self.users['rides']:
+            if rides['rideId'] == ride_id:
+                rides['status'] = 'Finalizada'
+                self.save_rides()
+                return rides
+
+        return None
+    
+    def unload_participant(self, alias, ride_id):
+        self.load_users()
+        self.load_rides()
+        self.load_ride_participations()
+
+        user = self.get_user_by_atribute('alias', alias)
+        if not user:
+            return None
+        
+        for participation in user['rides']:
+            participation = self.get_ride_participation_by_attribute('id', participation['id'])
+            if participation['rideId'] == ride_id:
+                user['rides'].remove(participation)
+                self.save_users()
+                return {"message": "Participant unloaded successfully"}
 
         return None

@@ -45,7 +45,15 @@ def get_rides_of_user(alias):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# @app.route('/usuarios/<alias>/rides/<rideid>', methods=['GET'])
+@app.route('/usuarios/<alias>/rides/<ride_id>', methods=['GET'])
+def get_ride_details(alias, ride_id):
+    try:
+        ride = data_handler.get_ride_details(alias, int(ride_id))
+        if not ride:
+            return jsonify({"error": "Ride not found"}), 404
+        return jsonify({"ride": ride})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/usuarios/<alias>/rides/<ride_id>/requestToJoin/<alias2>', methods=['POST'])
 def request_to_join_ride(alias, ride_id, alias2):
@@ -71,6 +79,36 @@ def accept_ride_request(alias, ride_id, alias2):
 def reject_ride_request(alias, ride_id, alias2):
     try:
         res = data_handler.reject_ride_request(alias, ride_id, alias2)
+        if not res:
+            return jsonify({"error": "Participation request failed"}), 400
+        return jsonify({"message": "Participation request successful"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/usuarios/<alias>/rides/<ride_id>/start', methods=['POST'])
+def start_ride(alias, ride_id):
+    try:
+        res = data_handler.start_ride(alias, ride_id)
+        if not res:
+            return jsonify({"error": "Participation request failed"}), 400
+        return jsonify({"message": "Participation request successful"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/usuarios/<alias>/rides/<ride_id>/end', methods=['POST'])
+def end_ride(alias, ride_id):
+    try:
+        res = data_handler.end_ride(alias, ride_id)
+        if not res:
+            return jsonify({"error": "Participation request failed"}), 400
+        return jsonify({"message": "Participation request successful"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/usuarios/<alias>/rides/<ride_id>/unloadParticipant', methods=['POST'])
+def unload_participant(alias, ride_id):
+    try:
+        res = data_handler.unload_participant(alias, ride_id)
         if not res:
             return jsonify({"error": "Participation request failed"}), 400
         return jsonify({"message": "Participation request successful"}), 201

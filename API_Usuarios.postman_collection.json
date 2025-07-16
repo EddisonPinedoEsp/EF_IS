@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "12345678-1234-1234-1234-123456789012",
+		"name": "API Usuarios - EF_IS",
+		"description": "Colección de endpoints para la gestión de usuarios y rides",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener todos los usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						},
+						"description": "Retorna lista de usuarios"
+					}
+				},
+				{
+					"name": "Obtener usuario por alias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{alias}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{alias}}"
+							]
+						},
+						"description": "Retorna los datos del usuario"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rides",
+			"item": [
+				{
+					"name": "Obtener rides del usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{alias}}/rides",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{alias}}",
+								"rides"
+							]
+						},
+						"description": "Retorna los datos de los rides creados por el usuario"
+					}
+				},
+				{
+					"name": "Obtener detalles de ride específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{alias}}/rides/{{rideid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{alias}}",
+								"rides",
+								"{{rideid}}"
+							]
+						},
+						"description": "Retorna los datos del ride incluyendo los participantes y las estadísticas de participaciones"
+					}
+				}
+			]
+		},
+		{
+			"name": "Gestión de Participaciones",
+			"item": [
+				{
+					"name": "Solicitar unirse a ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/requestToJoin/{{passenger_alias}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"requestToJoin",
+								"{{passenger_alias}}"
+							]
+						},
+						"description": "Solicita unirse a un ride específico"
+					}
+				},
+				{
+					"name": "Aceptar solicitud de ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/accept/{{passenger_alias}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"accept",
+								"{{passenger_alias}}"
+							]
+						},
+						"description": "Acepta una solicitud de participación en ride"
+					}
+				},
+				{
+					"name": "Rechazar solicitud de ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/reject/{{passenger_alias}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"reject",
+								"{{passenger_alias}}"
+							]
+						},
+						"description": "Rechaza una solicitud de participación en ride"
+					}
+				}
+			]
+		},
+		{
+			"name": "Control de Ride",
+			"item": [
+				{
+					"name": "Iniciar ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/start",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"start"
+							]
+						},
+						"description": "Inicia un ride"
+					}
+				},
+				{
+					"name": "Finalizar ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/end",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"end"
+							]
+						},
+						"description": "Finaliza un ride"
+					}
+				},
+				{
+					"name": "Descargar participante",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/unloadParticipant",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{driver_alias}}",
+								"rides",
+								"{{rideid}}",
+								"unloadParticipant"
+							]
+						},
+						"description": "Descarga un participante del ride"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "alias",
+			"value": "jperez",
+			"type": "string"
+		},
+		{
+			"key": "driver_alias",
+			"value": "jperez",
+			"type": "string"
+		},
+		{
+			"key": "passenger_alias",
+			"value": "lgomez",
+			"type": "string"
+		},
+		{
+			"key": "rideid",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
