@@ -24,36 +24,36 @@ class DataHandler:
         self.load_rides()
         self.load_ride_participations()
 
-    def load_users(self, path='data/users.json'):
+    def load_users(self, path='src/data/users.json'):
         try:
             with open(path, 'r') as f:
                 self.users = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.users = []
 
-    def save_users(self, path='data/users.json'):
+    def save_users(self, path='src/data/users.json'):
         with open(path, 'w') as f:
             json.dump(self.users, f)
 
-    def load_rides(self, path='data/rides.json'):
+    def load_rides(self, path='src/data/rides.json'):
         try:
             with open(path, 'r') as f:
                 self.rides = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.rides = []
 
-    def save_rides(self, path='data/rides.json'):
+    def save_rides(self, path='src/data/rides.json'):
         with open(path, 'w') as f:
             json.dump(self.rides, f)
 
-    def load_ride_participations(self, path='data/rideParticipations.json'):
+    def load_ride_participations(self, path='src/data/rideParticipations.json'):
         try:
             with open(path, 'r') as f:
                 self.ride_participations = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.ride_participations = []
     
-    def save_ride_participations(self, path='data/rideParticipations.json'):
+    def save_ride_participations(self, path='src/data/rideParticipations.json'):
         with open(path, 'w') as f:
             json.dump(self.ride_participations, f)
 

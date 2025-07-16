@@ -68,7 +68,7 @@ def request_to_join_ride(alias, ride_id, alias2):
 @app.route('/usuarios/<alias>/rides/<ride_id>/accept/<alias2>', methods=['POST'])
 def accept_ride_request(alias, ride_id, alias2):
     try:
-        res = data_handler.accept_ride_request(alias, ride_id, alias2)
+        res = data_handler.accept_ride_request(alias, int(ride_id), alias2)
         if not res:
             return jsonify({"error": "Participation request failed"}), 400
         return jsonify({"message": "Participation request successful"}), 201
@@ -108,7 +108,12 @@ def end_ride(alias, ride_id):
 @app.route('/usuarios/<alias>/rides/<ride_id>/unloadParticipant', methods=['POST'])
 def unload_participant(alias, ride_id):
     try:
-        res = data_handler.unload_participant(alias, int(ride_id))
+        data = request.get_json()
+        participant_alias = data.get('participant_alias')
+        if not participant_alias:
+            return jsonify({"error": "participant_alias is required"}), 400
+        
+        res = data_handler.unload_participant(participant_alias, int(ride_id))
         if not res:
             return jsonify({"error": "Participation request failed"}), 400
         return jsonify({"message": "Participation request successful"}), 201

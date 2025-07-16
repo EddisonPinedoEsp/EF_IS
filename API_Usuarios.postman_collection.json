@@ -241,6 +241,10 @@
 								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"participant_alias\": \"{{passenger_alias}}\"\n}"
+						},
 						"url": {
 							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/unloadParticipant",
 							"host": [
@@ -284,36 +288,6 @@
 		{
 			"key": "rideid",
 			"value": "1",
-			"type": "string"
-		},
-		{
-			"key": "accept_driver_alias",
-			"value": "juan",
-			"type": "string"
-		},
-		{
-			"key": "accept_passenger_alias",
-			"value": "maria",
-			"type": "string"
-		},
-		{
-			"key": "accept_rideid",
-			"value": "2",
-			"type": "string"
-		},
-		{
-			"key": "reject_driver_alias",
-			"value": "ana",
-			"type": "string"
-		},
-		{
-			"key": "reject_passenger_alias",
-			"value": "carlos",
-			"type": "string"
-		},
-		{
-			"key": "reject_rideid",
-			"value": "4",
 			"type": "string"
 		}
 	]
