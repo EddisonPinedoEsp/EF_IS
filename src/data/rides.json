@@ -6,7 +6,7 @@
         "allowedSpaces": 4,
         "rideDriver": 1,
         "status": "Ready",
-        "participants": [2, 3]
+        "participants": []
     },
     {
         "id": 2,
@@ -15,7 +15,7 @@
         "allowedSpaces": 3,
         "rideDriver": 1,
         "status": "Ready",
-        "participants": []
+        "participants": [2]
     },
     {
         "id": 3,
@@ -34,5 +34,14 @@
         "rideDriver": 4,
         "status": "Ready",
         "participants": [3]
+    },
+    {
+        "id": 5,
+        "rideDateAndTime": "2025-07-23 09:00",
+        "finalAddress": "Estadio Nacional",
+        "allowedSpaces": 4,
+        "rideDriver": 1,
+        "status": "Ready",
+        "participants": []
     }
 ]

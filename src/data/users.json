@@ -1,30 +1,37 @@
 [
     {
         "id": 1,
-        "alias": "juan_driver",
+        "alias": "juan",
         "name": "Juan Pérez",
         "carPlate": "ABC-123",
-        "rides": [1, 2]
-    },
-    {
-        "id": 2,
-        "alias": "maria_user",
-        "name": "María García",
-        "carPlate": "DEF-456",
-        "rides": [3]
-    },
-    {
-        "id": 3,
-        "alias": "carlos_rider",
-        "name": "Carlos López",
-        "carPlate": "GHI-789",
         "rides": []
     },
     {
+        "id": 2,
+        "alias": "maria",
+        "name": "María García",
+        "carPlate": "DEF-456",
+        "rides": [2, 3]
+    },
+    {
+        "id": 3,
+        "alias": "carlos",
+        "name": "Carlos López",
+        "carPlate": "GHI-789",
+        "rides": [4]
+    },
+    {
         "id": 4,
-        "alias": "ana_driver",
+        "alias": "ana",
         "name": "Ana Rodríguez",
         "carPlate": "JKL-012",
-        "rides": [4]
+        "rides": []
+    },
+    {
+        "id": 5,
+        "alias": "luis",
+        "name": "Luis Martínez",
+        "carPlate": "MNO-345",
+        "rides": []
     }
 ]

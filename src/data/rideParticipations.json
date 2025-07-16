@@ -1,19 +1,11 @@
 [
     {
-        "id": 1,
-        "confirmation": "15-07-25",
-        "destination": "Universidad Central - Campus Norte",
-        "occupiedSpaces": 2,
-        "status": "Pendiente",
-        "rideId": 1
-    },
-    {
         "id": 2,
         "confirmation": "15-07-25",
-        "destination": "Universidad Central - Campus Norte",
-        "occupiedSpaces": 2,
-        "status": "Aceptada",
-        "rideId": 1
+        "destination": "Centro Comercial Plaza",
+        "occupiedSpaces": 1,
+        "status": "Pendiente",
+        "rideId": 2
     },
     {
         "id": 3,

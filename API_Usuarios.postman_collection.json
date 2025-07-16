@@ -94,7 +94,7 @@
 			"name": "Gestión de Participaciones",
 			"item": [
 				{
-					"name": "Solicitar unirse a ride",
+					"name": "Solicitar unirse a ride (Juan conductor, Luis pasajero)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -104,24 +104,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/requestToJoin/{{passenger_alias}}",
+							"raw": "{{base_url}}/usuarios/juan/rides/1/requestToJoin/luis",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"{{driver_alias}}",
+								"juan",
 								"rides",
-								"{{rideid}}",
+								"1",
 								"requestToJoin",
-								"{{passenger_alias}}"
+								"luis"
 							]
 						},
-						"description": "Solicita unirse a un ride específico"
+						"description": "Luis solicita unirse al ride 1 de Juan"
 					}
 				},
 				{
-					"name": "Aceptar solicitud de ride",
+					"name": "Aceptar solicitud de ride (Juan acepta a María)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -131,24 +131,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/accept/{{passenger_alias}}",
+							"raw": "{{base_url}}/usuarios/juan/rides/2/accept/maria",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"{{driver_alias}}",
+								"juan",
 								"rides",
-								"{{rideid}}",
+								"2",
 								"accept",
-								"{{passenger_alias}}"
+								"maria"
 							]
 						},
-						"description": "Acepta una solicitud de participación en ride"
+						"description": "Juan acepta a María en el ride 2 (María ya está pendiente)"
 					}
 				},
 				{
-					"name": "Rechazar solicitud de ride",
+					"name": "Rechazar solicitud de ride (Ana rechaza a Carlos)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -158,20 +158,20 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/reject/{{passenger_alias}}",
+							"raw": "{{base_url}}/usuarios/ana/rides/4/reject/carlos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"{{driver_alias}}",
+								"ana",
 								"rides",
-								"{{rideid}}",
+								"4",
 								"reject",
-								"{{passenger_alias}}"
+								"carlos"
 							]
 						},
-						"description": "Rechaza una solicitud de participación en ride"
+						"description": "Ana rechaza a Carlos en el ride 4 (Carlos ya está pendiente)"
 					}
 				}
 			]
@@ -268,22 +268,52 @@
 		},
 		{
 			"key": "alias",
-			"value": "jperez",
+			"value": "juan",
 			"type": "string"
 		},
 		{
 			"key": "driver_alias",
-			"value": "jperez",
+			"value": "juan",
 			"type": "string"
 		},
 		{
 			"key": "passenger_alias",
-			"value": "lgomez",
+			"value": "luis",
 			"type": "string"
 		},
 		{
 			"key": "rideid",
 			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "accept_driver_alias",
+			"value": "juan",
+			"type": "string"
+		},
+		{
+			"key": "accept_passenger_alias",
+			"value": "maria",
+			"type": "string"
+		},
+		{
+			"key": "accept_rideid",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "reject_driver_alias",
+			"value": "ana",
+			"type": "string"
+		},
+		{
+			"key": "reject_passenger_alias",
+			"value": "carlos",
+			"type": "string"
+		},
+		{
+			"key": "reject_rideid",
+			"value": "4",
 			"type": "string"
 		}
 	]
