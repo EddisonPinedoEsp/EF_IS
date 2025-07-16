@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "12345678-1234-1234-1234-123456789012",
+		"_postman_id": "7673aea6-259d-49f5-b940-934d48b943f9",
 		"name": "API Usuarios - EF_IS",
 		"description": "Colección de endpoints para la gestión de usuarios y rides",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33931749"
 	},
 	"item": [
 		{
@@ -24,7 +25,8 @@
 							]
 						},
 						"description": "Retorna lista de usuarios"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Obtener usuario por alias",
@@ -42,7 +44,8 @@
 							]
 						},
 						"description": "Retorna los datos del usuario"
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -55,18 +58,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{alias}}/rides",
+							"raw": "{{base_url}}/usuarios/maria/rides",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"{{alias}}",
+								"maria",
 								"rides"
 							]
 						},
 						"description": "Retorna los datos de los rides creados por el usuario"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Obtener detalles de ride específico",
@@ -74,7 +78,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{alias}}/rides/{{rideid}}",
+							"raw": "{{base_url}}/usuarios/{{alias}}/rides/2",
 							"host": [
 								"{{base_url}}"
 							],
@@ -82,11 +86,12 @@
 								"usuarios",
 								"{{alias}}",
 								"rides",
-								"{{rideid}}"
+								"2"
 							]
 						},
 						"description": "Retorna los datos del ride incluyendo los participantes y las estadísticas de participaciones"
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -118,7 +123,8 @@
 							]
 						},
 						"description": "Luis solicita unirse al ride 1 de Juan"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Aceptar solicitud de ride (Juan acepta a María)",
@@ -145,7 +151,8 @@
 							]
 						},
 						"description": "Juan acepta a María en el ride 2 (María ya está pendiente)"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Rechazar solicitud de ride (Ana rechaza a Carlos)",
@@ -172,7 +179,8 @@
 							]
 						},
 						"description": "Ana rechaza a Carlos en el ride 4 (Carlos ya está pendiente)"
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -203,7 +211,8 @@
 							]
 						},
 						"description": "Inicia un ride"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Finalizar ride",
@@ -229,7 +238,8 @@
 							]
 						},
 						"description": "Finaliza un ride"
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Descargar participante",
@@ -241,25 +251,22 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"participant_alias\": \"{{passenger_alias}}\"\n}"
-						},
 						"url": {
-							"raw": "{{base_url}}/usuarios/{{driver_alias}}/rides/{{rideid}}/unloadParticipant",
+							"raw": "{{base_url}}/usuarios/maria/rides/2/unloadParticipant",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"{{driver_alias}}",
+								"maria",
 								"rides",
-								"{{rideid}}",
+								"2",
 								"unloadParticipant"
 							]
 						},
 						"description": "Descarga un participante del ride"
-					}
+					},
+					"response": []
 				}
 			]
 		}
@@ -288,6 +295,36 @@
 		{
 			"key": "rideid",
 			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "accept_driver_alias",
+			"value": "juan",
+			"type": "string"
+		},
+		{
+			"key": "accept_passenger_alias",
+			"value": "maria",
+			"type": "string"
+		},
+		{
+			"key": "accept_rideid",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "reject_driver_alias",
+			"value": "ana",
+			"type": "string"
+		},
+		{
+			"key": "reject_passenger_alias",
+			"value": "carlos",
+			"type": "string"
+		},
+		{
+			"key": "reject_rideid",
+			"value": "4",
 			"type": "string"
 		}
 	]
